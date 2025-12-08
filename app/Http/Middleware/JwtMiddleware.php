@@ -9,10 +9,11 @@ use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
+use App\Traits\ApiResponse;
 
 class JwtMiddleware
 {
-    use \App\Traits\ApiResponse;
+    use ApiResponse;
 
     /**
      * Handle an incoming request.

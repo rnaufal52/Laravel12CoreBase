@@ -13,45 +13,50 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        // Define permissions by module
-        $permissionsByEntity = [
-            'user' => [
-                'manage',
-                'create_siswa',
-                'update_self',
-                'create_self',
+        // role
+        $roles=[
+            'super-admin',
+            'admin',
+            'staff'
+        ];
+
+        // permission
+        $permissions=[
+            'user' => ['get', 'create', 'show', 'update', 'destroy'],
+        ];
+
+        // role has permission
+        $RolePermission=[
+            'super-admin'=>[
+                'user'=>'*',
+            ],
+            'admin'=>[
+                'user'=>'*',
             ],
         ];
 
-        // Create permissions
-        foreach ($permissionsByEntity as $entity => $permissions) {
-            foreach ($permissions as $permission) {
-                Permission::firstOrCreate(['name' => "$entity.$permission"]);
+        foreach($roles as $role){
+            Role::firstOrCreate(['name' => $role]);
+        }
+
+        foreach($permissions as $permission => $types){
+            foreach($types as $type){
+                Permission::firstOrCreate(['name' => $permission.'.'.$type]);
             }
         }
 
-        // Define roles and their permissions
-        $roles = [
-            'super-admin' => 'all',
-            'admin' => 'all',
-            'staff' => [
-                'user.create_siswa',
-                'user.update_self',
-            ],
-            'siswa' => [
-                'user.create_self',
-                'user.update_self',
-            ],
-        ];
-
-        // Create roles and assign permissions
-        foreach ($roles as $roleName => $rolePermissions) {
-            $role = Role::firstOrCreate(['name' => $roleName]);
-
-            if ($rolePermissions === 'all') {
-                $role->givePermissionTo(Permission::all());
-            } else {
-                $role->givePermissionTo($rolePermissions);
+        foreach($RolePermission as $r => $perms){
+            $role = Role::findByName($r);
+            foreach($perms as $perm => $p){
+                if($perms[$perm] == '*'){
+                    foreach($permissions[$perm] as $prm){
+                        $role->givePermissionTo($perm.'.'.$prm);
+                    }
+                }else{
+                    foreach($p as $prm){
+                        $role->givePermissionTo($perm.'.'.$prm);
+                    }
+                }
             }
         }
     }

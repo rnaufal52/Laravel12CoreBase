@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\SupportModul\AuthenticationAndRBAC\Authentication;
 
 use Illuminate\Support\Facades\Auth;
+use App\Models\Support\Modul\AuthenticationAndRBAC\User;
 
 class AuthService
 {
@@ -14,13 +15,13 @@ class AuthService
      */
     public function register(array $data)
     {
-        $user = \App\Models\User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
 
-        $user->assignRole('siswa');
+        $user->assignRole('staff');
 
         if (! $token = auth('api')->login($user)) {
             return false;

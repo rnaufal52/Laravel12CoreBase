@@ -34,4 +34,49 @@ return Application::configure(basePath: dirname(__DIR__))
                 );
             }
         });
+
+        // error unauthorized
+        $exceptions->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, $request) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                $apiResponse = new ApiResponseHelper();
+                return $apiResponse->errorResponse(
+                    'Anda tidak memiliki akses untuk tindakan ini',
+                    403
+                );
+            }
+        });
+
+        // error not found
+        $exceptions->renderable(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, $request) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                $apiResponse = new ApiResponseHelper();
+                return $apiResponse->errorResponse(
+                    $e->getMessage() ?: 'Resource tidak ditemukan',
+                    404
+                );
+            }
+        });
+
+        // error http exception
+        $exceptions->renderable(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                $apiResponse = new ApiResponseHelper();
+                return $apiResponse->errorResponse(
+                    $e->getMessage() ?: 'Terjadi kesalahan pada server',
+                    $e->getStatusCode()
+                );
+            }
+        });
+
+        // error 500
+        $exceptions->renderable(function (\Throwable $e, $request) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                $apiResponse = new ApiResponseHelper();
+                $message = config('app.debug') ? $e->getMessage() : 'Terjadi kesalahan internal server';
+                return $apiResponse->errorResponse(
+                    $message,
+                    500
+                );
+            }
+        });
     })->create();

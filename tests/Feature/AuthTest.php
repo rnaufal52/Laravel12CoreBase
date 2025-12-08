@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\User;
+use App\Models\Support\Modul\AuthenticationAndRBAC\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 
 class AuthTest extends TestCase
@@ -23,8 +23,8 @@ class AuthTest extends TestCase
         $response = $this->postJson('/api/auth/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
+            'password' => 'SpmbBengkulu2026!',
+            'password_confirmation' => 'SpmbBengkulu2026!',
         ]);
 
         $response->assertStatus(201)
@@ -69,7 +69,7 @@ class AuthTest extends TestCase
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
         ]);
-        $user->assignRole('siswa');
+        $user->assignRole('staff');
 
         $response = $this->postJson('/api/auth/login', [
             'email' => 'test@example.com',

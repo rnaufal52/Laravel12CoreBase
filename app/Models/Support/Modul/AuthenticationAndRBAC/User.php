@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Support\Modul\AuthenticationAndRBAC;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +13,11 @@ class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
+
+    protected static function newFactory()
+    {
+        return \Database\Factories\UserFactory::new();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -69,5 +74,24 @@ class User extends Authenticatable implements JWTSubject
             'id' => $this->id,
             'role' => $this->getRoleNames()->first() ?? 'unassigned',
         ];
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        })->when($filters['role'] ?? null, function ($query, $role) {
+            $query->role($role);
+        });
+
+        if (isset($filters['sort']) && in_array($filters['sort'], ['name', 'email', 'created_at'])) {
+            $direction = isset($filters['direction']) && in_array(strtolower($filters['direction']), ['asc', 'desc'])
+                ? $filters['direction']
+                : 'asc';
+            $query->orderBy($filters['sort'], $direction);
+        }
     }
 }

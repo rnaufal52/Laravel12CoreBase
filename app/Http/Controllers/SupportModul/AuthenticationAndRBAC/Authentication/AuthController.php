@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\SupportModul\AuthenticationAndRBAC\Authentication;
 
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Services\SupportModul\AuthenticationAndRBAC\Authentication\AuthService;
+use App\Http\Requests\SupportModul\AuthenticationAndRBAC\Authentication\LoginRequest;
+use App\Http\Requests\SupportModul\AuthenticationAndRBAC\Authentication\RegisterRequest;
 
 class AuthController extends Controller
 {
@@ -20,22 +23,16 @@ class AuthController extends Controller
 
     /**
      * Create a new AuthController instance.
-     *
-     * @param \App\Services\AuthService $authService
-     * @return void
      */
-    public function __construct(\App\Services\AuthService $authService)
+    public function __construct(AuthService $authService)
     {
         $this->authService = $authService;
     }
 
     /**
      * Get a JWT via given credentials.
-     *
-     * @param \App\Http\Requests\LoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function login(\App\Http\Requests\LoginRequest $request)
+    public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
 
@@ -50,11 +47,8 @@ class AuthController extends Controller
 
     /**
      * Register a new user.
-     *
-     * @param \App\Http\Requests\RegisterRequest $request
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function register(\App\Http\Requests\RegisterRequest $request)
+    public function register(RegisterRequest $request)
     {
         $token = $this->authService->register($request->validated());
 
@@ -63,8 +57,6 @@ class AuthController extends Controller
 
     /**
      * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function me()
     {
@@ -73,8 +65,6 @@ class AuthController extends Controller
 
     /**
      * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function logout()
     {
@@ -85,8 +75,6 @@ class AuthController extends Controller
 
     /**
      * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function refresh()
     {
