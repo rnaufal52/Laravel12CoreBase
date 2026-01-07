@@ -15,24 +15,36 @@ class JwtMiddleware
 {
     use ApiResponse;
 
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
+
             if (! $user) {
-                return $this->errorResponse('User tidak ditemukan', 404);
+                return $this->errorResponse(
+                    'Unauthorized',
+                    Response::HTTP_UNAUTHORIZED
+                );
             }
+
+            // optional: inject user ke request
+            $request->attributes->set('auth_user', $user);
+
         } catch (TokenExpiredException $e) {
-            return $this->errorResponse('Token sudah kadaluarsa', 401);
+            return $this->errorResponse(
+                'Token sudah kadaluarsa',
+                Response::HTTP_UNAUTHORIZED
+            );
         } catch (TokenInvalidException $e) {
-            return $this->errorResponse('Token tidak valid', 401);
+            return $this->errorResponse(
+                'Token tidak valid',
+                Response::HTTP_UNAUTHORIZED
+            );
         } catch (JWTException $e) {
-            return $this->errorResponse('Token otorisasi tidak ditemukan', 401);
+            return $this->errorResponse(
+                'Token otorisasi tidak ditemukan',
+                Response::HTTP_UNAUTHORIZED
+            );
         }
 
         return $next($request);

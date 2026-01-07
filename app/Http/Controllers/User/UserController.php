@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\SupportModul\AuthenticationAndRBAC\User;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\SupportModul\AuthenticationAndRBAC\User\UserService;
-use App\Http\Requests\SupportModul\AuthenticationAndRBAC\User\UserRequest;
-use App\Traits\ApiResponse;
+use App\Services\User\UserService;
+use App\Http\Requests\User\UserRequest;
 
 class UserController extends Controller
 {
-    use ApiResponse;
-
     protected $userService;
 
     public function __construct(UserService $userService)

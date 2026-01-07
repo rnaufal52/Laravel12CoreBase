@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\SupportModul\AuthenticationAndRBAC\RoleAndPermission;
+namespace App\Http\Requests\RoleAndPermission;
 
 use Illuminate\Foundation\Http\FormRequest;
 

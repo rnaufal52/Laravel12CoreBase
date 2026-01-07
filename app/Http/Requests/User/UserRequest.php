@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests\SupportModul\AuthenticationAndRBAC\User;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\User;
+use Illuminate\Validation\Rules\Password;
 
 class UserRequest extends FormRequest
 {
@@ -12,7 +14,7 @@ class UserRequest extends FormRequest
     public function authorize(): bool
     {
         if ($this->route('id')) {
-            $user = \App\Models\Support\Modul\AuthenticationAndRBAC\User::find($this->route('id'));
+            $user = User::find($this->route('id'));
             if (!$user) {
                 abort(404, 'User tidak ditemukan');
             }
@@ -45,7 +47,7 @@ class UserRequest extends FormRequest
             $rules['password'] = [
                 'required',
                 'confirmed',
-                \Illuminate\Validation\Rules\Password::min(8)
+                Password::min(8)
                     ->max(20)
                     ->mixedCase()
                     ->letters()
@@ -57,7 +59,7 @@ class UserRequest extends FormRequest
             $rules['password'] = [
                 'nullable',
                 'confirmed',
-                \Illuminate\Validation\Rules\Password::min(8)
+                Password::min(8)
                     ->max(20)
                     ->mixedCase()
                     ->letters()

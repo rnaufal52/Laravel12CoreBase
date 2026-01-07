@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests\SupportModul\AuthenticationAndRBAC\Authentication;
+namespace App\Http\Requests\Authentication;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class RegisterRequest extends FormRequest
             'password' => [
                 'required',
                 'confirmed',
-                \Illuminate\Validation\Rules\Password::min(8)
+                Password::min(8)
                     ->max(20)
                     ->mixedCase()
                     ->letters()

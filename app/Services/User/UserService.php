@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\SupportModul\AuthenticationAndRBAC\User;
+namespace App\Services\User;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\Support\Modul\AuthenticationAndRBAC\User;
+use App\Models\User;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Illuminate\Support\Facades\Cache;
 

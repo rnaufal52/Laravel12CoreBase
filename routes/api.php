@@ -2,9 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SupportModul\AuthenticationAndRBAC\Authentication\AuthController;
-use App\Http\Controllers\SupportModul\AuthenticationAndRBAC\User\UserController;
-use App\Http\Controllers\SupportModul\AuthenticationAndRBAC\RoleAndPermission\RoleAndPermissionController;
+use App\Http\Controllers\Authentication\AuthController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\RoleAndPermission\RoleAndPermissionController;
 
 /*
 |--------------------------------------------------------------------------

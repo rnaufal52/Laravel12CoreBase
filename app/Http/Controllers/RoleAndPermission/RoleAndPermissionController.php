@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\SupportModul\AuthenticationAndRBAC\RoleAndPermission;
+namespace App\Http\Controllers\RoleAndPermission;
 
 use App\Http\Controllers\Controller;
-use App\Services\SupportModul\AuthenticationAndRBAC\RoleAndPermission\RoleAndPermissionService;
-use App\Http\Requests\SupportModul\AuthenticationAndRBAC\RoleAndPermission\RoleAndPermissionRequest;
-use App\Traits\ApiResponse;
+use App\Services\RoleAndPermission\RoleAndPermissionService;
+use App\Http\Requests\RoleAndPermission\RoleAndPermissionRequest;
 
 class RoleAndPermissionController extends Controller
 {
-    use ApiResponse;
-
     protected $service;
 
     public function __construct(RoleAndPermissionService $service)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\SupportModul\AuthenticationAndRBAC\RoleAndPermission;
+namespace App\Services\RoleAndPermission;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
